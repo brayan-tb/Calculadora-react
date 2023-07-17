@@ -1,38 +1,120 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    font-family: 'Poppins';
+    background-color: #f1f1f1;
+    display: flex;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin: 0;
+    transition: all 0.5s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.calculator {
+    max-width: calc(100% - 20px);
+    height: 90vh;
+    margin: 0 auto;
+    border-radius: 16px;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.calculator input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 40px 10px;
+    font-size: 1.8rem;
+    border: none;
+    border-radius: .7rem;
+    text-align: end;
 }
 
-.App-link {
-  color: #61dafb;
+.calculator input[type="text"]:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.grid {
+    width: 100%;
+    padding: 20px 10px;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 12px;
+    text-align: center;
+}
+
+.grid button {
+    height: 78px;
+    padding: 5px;
+    font-size: 1.7rem;
+    border: none;
+    border-radius: 70rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.7s ease;
+    justify-content: center;
+}
+
+.grid button:hover {
+    /* background: #f4f4f4; */
+    background-color: #313131;
+    color: #fff;
+    transform: scale(1.06);
+}
+
+.operator {
+    background: orange !important;
+}
+
+/* dark mode */
+
+body.dark-mode {
+    color: #fff;
+    background-color: #141414;
+    /* background-color: #1f1f1f; */
+}
+
+.calculator.dark-mode {
+    color: #fff;
+}
+
+.calculator.dark-mode input[type="text"]{
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+.calculator.dark-mode .grid button{
+    background-color: #1f1f1f;
+    color: #fff;
+}
+
+.calculator.dark-mode .grid button:hover {
+    background: #f4f4f4;
+    color: #000;
+}
+
+@media (min-width: 800px) and (min-height: 650px) {
+    body {
+        height: 100vh;
+    }
+
+    .calculator {
+        height: auto;
+        background-color: #fff;
+        box-shadow: 0 0 17px rgba(0, 0, 0, 0.1);
+        padding: 20px 10px;
+    }
+
+    .calculator.dark-mode {
+        background-color: #141414;
+    }
+
 }
