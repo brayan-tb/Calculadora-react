@@ -5,23 +5,6 @@ import BtnOperator from "../btn/Btn";
 
 class Grid extends React.Component {
 
-    // componentDidMount(){
-    //     console.log("componentDidMount")
-    // }
-
-    // componentDidUpdate(){
-    //     console.log("componentDidUpdate")
-    // }
-
-    // componentWillUnmount(){
-    //     console.log("componentWillUnmount")
-    // }
-
-    // shouldComponentUpdate(){
-    //     console.log("shouldComponentUpdate")
-    //     return true;
-    // }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +13,36 @@ class Grid extends React.Component {
             lastOperation: "",
             count: 1
         }
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+    
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    // componentDidUpdate(){}
+    
+    // shouldComponentUpdate(){return true;}
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    handleKeyDown(event) {
+        const operators = ['.', '+', '-', '*', '/'];
+        const pressed = event.key;
+        if (operators.includes(pressed)) { return this.appendOperator(pressed); }
+        else if (pressed >= 0 && pressed <= 9) { return this.appendValue(pressed); }
+        else if (pressed === "Escape") { return this.handleClickClear(); }
+        else if (pressed === "Enter") { return this.handleCalculate(); }
+        else if (pressed === ",") { return this.appendValue('.'); }
+        else if (pressed === "Backspace") { return this.handleRemoveValue() }
+        event.preventDefault();
+    }
+
+    handleOperator(event) {
+        this.appendOperator(event.target.id)
     }
 
     handleClickClear() {
@@ -62,25 +75,37 @@ class Grid extends React.Component {
         calculator.classList.toggle('dark-mode');
     }
 
+    appendValue(value) {
+        this.setState({
+            text: this.state.text + value,
+        })
+        console.log(this.state)
+    }
+
+    appendOperator(value) {
+        this.setState({
+            text: this.state.text + value,
+            lastOperator: value,
+            lastOperation: this.state.text.toString(),
+            count: 1
+        })
+        console.log(this.state)
+    }
+
     handleCalculate() {
-        
+
+        if (this.state.text.length === 0) {
+            return;
+        }
+
         let result = 0;
-        if (this.state.text.length > 0) {
-    
         const value = this.state.text.toString().replace(/(^|[^0-9])0+([0-9]+)/g, '$1$2');
 
         if (this.state.count > 1) {
-            const lastOperation = this.state.lastOperation
-            let op = `${value} ${this.state.lastOperator} ${lastOperation}`;
-            // console.log(lastOperation)
-            // console.log("conta: " + op);
 
-            try {
-                result = eval(op);
-            } catch (error) {
-                this.setState({text: "Erro",count: 1 })
-                return "Erro"
-            }
+            const lastOperation = this.state.lastOperation
+            const op = `${value} ${this.state.lastOperator} ${lastOperation}`;
+            result = this.evaluateExpression(op)
 
             this.setState({
                 text: result.toString(),
@@ -88,11 +113,8 @@ class Grid extends React.Component {
             })
 
         } else {
-            try {
-                result = eval(value);
-            } catch (error) { this.setState({ text: "Erro", count: 1 })
-                return "Erro"
-            }
+            result = this.evaluateExpression(value)
+
             this.setState({
                 text: result.toString(),
                 lastOperation: value.replace(/.*[-+*/]/, '')
@@ -100,22 +122,21 @@ class Grid extends React.Component {
 
             this.setState({ count: this.state.count + 1 })
         }
-    }
+
     }
 
-    handleOperator(event) {
-        // console.log(this.state.lastOperation + " " + event.target.textContent)
-        this.setState({
-            text: this.state.text + event.target.id,
-            lastOperator: event.target.id,
-            lastOperation: this.state.text.toString(),
-            count: 1
-        })
-        // console.log(this.state)
+    evaluateExpression(expression) {
+        try {
+            return eval(expression);
+        }
+        catch (error) {
+            this.setState({ text: "Erro", count: 1 })
+            return error
+        }
     }
 
     render() {
-        // console.log("render")
+
         return (
             <div className="calculator">
 
@@ -152,6 +173,5 @@ class Grid extends React.Component {
         )
     }
 }
-
 
 export default Grid;
