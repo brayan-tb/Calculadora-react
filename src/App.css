@@ -64,7 +64,6 @@ body {
 }
 
 .grid button:hover {
-    /* background: #f4f4f4; */
     background-color: #313131;
     color: #fff;
     transform: scale(1.06);
@@ -75,11 +74,9 @@ body {
 }
 
 /* dark mode */
-
 body.dark-mode {
     color: #fff;
     background-color: #141414;
-    /* background-color: #1f1f1f; */
 }
 
 .calculator.dark-mode {
@@ -101,7 +98,7 @@ body.dark-mode {
     color: #000;
 }
 
-@media (min-width: 800px) and (min-height: 650px) {
+@media (min-width: 700px) and (min-height: 650px) {
     body {
         height: 100vh;
     }

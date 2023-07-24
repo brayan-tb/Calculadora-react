@@ -83,13 +83,33 @@ class Grid extends React.Component {
     }
 
     appendOperator(value) {
+
+        const text = this.state.text + value;
+        const newText = text.replace(/(^|[^0-9])0+([0-9]+)/g, '$1$2');
+        const operatorMatch = newText.match(/[+\-*/]/g);
+
+        if (operatorMatch && operatorMatch.length > 1) {
+            const operator = operatorMatch[operatorMatch.length - 1];
+            console.log("operador: " + operator)
+            this.setState({ count: 1 })
+            const result = this.evaluateExpression(text.slice(0, -1)).toString()
+             
+            return this.setState({
+                text: result + value,
+                lastOperator: value,
+                lastOperation: result,
+            })
+          }
+
         this.setState({
-            text: this.state.text + value,
+            text: text,
             lastOperator: value,
-            lastOperation: this.state.text.toString(),
+            lastOperation: text.toString(),
             count: 1
         })
+
         console.log(this.state)
+        
     }
 
     handleCalculate() {
@@ -126,6 +146,7 @@ class Grid extends React.Component {
     }
 
     evaluateExpression(expression) {
+        console.log("expression: " + expression)
         try {
             return eval(expression);
         }
